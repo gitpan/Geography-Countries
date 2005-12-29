@@ -1,30 +1,21 @@
 package Geography::Countries;
 
-#
-# $Id: Countries.pm,v 1.4 2003/01/26 18:19:07 abigail Exp $
-#
-# $Log: Countries.pm,v $
-# Revision 1.4  2003/01/26 18:19:07  abigail
-# Changed license, email address. Added installation section.
-#
-# Revision 1.3  2003/01/26 18:12:10  abigail
-# Removed INIT{} from initializing code, as the INIT{} isn't run
-# when doing 'require'.
-#
-# Revision 1.2  2000/09/05 18:22:01  abigail
-# Changed typo in "Federal Republic of Germany" (Dan Allen)
-# Changed layout of test.pl
-#
-# Revision 1.1  1999/09/15 07:27:22  abigail
-# Initial revision
-#
-#
-
 use strict;
 use Exporter;
 
+=head1 NAME
+
+Geography::Countries -- 2-letter, 3-letter, and numerical codes for countries.
+
+=head1 VERSION
+
+Version 1.41_01
+
+=cut
+
 use vars qw /@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION/;
 
+$VERSION     = '1.41_01';
 @ISA         = qw /Exporter/;
 @EXPORT      = qw /country/;
 @EXPORT_OK   = qw /code2         code3       numcode       countries
@@ -36,9 +27,6 @@ use vars qw /@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION/;
                                 CNT_I_COUNTRY CNT_I_FLAG/],
                 FLAGS   => [qw /CNT_F_REGULAR CNT_F_OLD
                                 CNT_F_REGION  CNT_F_ANY/],);
-
-($VERSION)   = '$Revision: 1.4 $' =~ /([\d.]+)/;
-
 
 use constant CNT_I_CODE2   =>    0;
 use constant CNT_I_CODE3   =>    1;
@@ -119,7 +107,7 @@ sub country ($;$) {
 
     die "Undefined argument for $sub.\n"     unless defined $query;
 
-    $flags ||=  CNT_F_REGULAR;
+    $flags ||= CNT_F_REGULAR;
 
     die "Illegal second argument to $sub.\n" if $flags =~ /\D/;
 
@@ -128,24 +116,15 @@ sub country ($;$) {
     return unless $info -> [CNT_I_FLAG] & $flags;
 
     wantarray ? @$info : $info -> [CNT_I_COUNTRY];
-
 }
-
-
-<<'=cut'
-
-=pod
-
-=head1 NAME
-
-Geography::Countries -- 2-letter, 3-letter, and numerical codes for countries.
 
 =head1 SYNOPSIS
 
-    use Geography::Countries;
+ use strict;
+ use Geography::Countries;
 
-    $country = country 'DE';  # 'Germany'
-    @list    = country  666;  # ('PM', 'SPM', 666,
+ my $country = country 'DE';  # 'Germany'
+ my @list    = country  666;  # ('PM', 'SPM', 666,
                               #  'Saint Pierre and Miquelon', 1)
 
 =head1 DESCRIPTION
@@ -154,7 +133,7 @@ This module maps country names, and their 2-letter, 3-letter and
 numerical codes, as defined by the ISO-3166 maintenance agency [1],
 and defined by the UNSD.
 
-=head2 The C<country> subroutine.
+=head2 The C<country> subroutine
 
 This subroutine is exported by default. It takes a 2-letter, 3-letter or
 numerical code, or a country name as argument. In scalar context, it will
@@ -195,7 +174,7 @@ the 3-letter code, the numerical code, the country, and the flag explained
 above, respectively. All index constants can be imported by using the
 C<:INDICES> tag.
 
-=head2 The C<code2>, C<code3>, C<numcode> and C<countries> routines.
+=head2 The C<code2>, C<code3>, C<numcode> and C<countries> routines
 
 All known 2-letter codes, 3-letter codes, numerical codes and country
 names can be returned by the routines C<code2>, C<code3>, C<numcode> and
@@ -261,6 +240,10 @@ I<Geographical regions>.
 I<http://www.un.org/Depts/unsd/methods/m49regin.htm>,
 26 August 1999.
 
+=item [8]
+
+I<http://en.wikipedia.org/wiki/Country_code>, 10 February 2005.
+
 =back
 
 =head1 BUGS
@@ -270,27 +253,46 @@ Except for case and the amount of white space, the exact name as it
 appears on the list has to be given. I<USA> will not return anything,
 but I<United States> will.
 
+Please report bugs to C<bug-geography-countries at rt.cpan.org>, or
+through the web interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Geography-Countries>.
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc Geography::Countries
+
+You can also look for information at:
+
+=over 4
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/Geography-Countries>
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/Geography-Countries>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/Geography-Countries>
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Geography-Countries>
+
+=back
+
 =head1 HISTORY
 
-    $Log: Countries.pm,v $
-    Revision 1.4  2003/01/26 18:19:07  abigail
-    Changed license, email address. Added installation section.
-
-    Revision 1.3  2003/01/26 18:12:10  abigail
-    Removed INIT{} from initializing code, as the INIT{} isn't run
-    when doing 'require'.
-
-    Revision 1.2  2000/09/05 18:22:01  abigail
-    Changed typo in "Federal Republic of Germany" (Dan Allen)
-    Changed layout of test.pl
-
-    Revision 1.1  1999/09/15 07:27:22  abigail
-    Initial revision
-
+See the file named "Changes" with this distribution.
 
 =head1 AUTHOR
 
-This package was written by Abigail, I<geometry-countries@abigail.nl>
+This package was written by Abigail, I<geometry-countries@abigail.nl>.
+Updated by Ashley Pond V, C<< <ashley at cpan.org> >>
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -314,15 +316,6 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-=head1 INSTALLATION
- 
-To install this module type the following:
-
-   perl Makefile.PL
-   make
-   make test
-   make install
-
 =cut
 
 __DATA__
@@ -334,7 +327,7 @@ AS ASM 016 American Samoa
 AD AND 020 Andorra
 AO AGO 024 Angola
 AI AIA 660 Anguilla
-AQ         Antarctica
+AQ ATA 010 Antarctica
 AG ATG 028 Antigua and Barbuda
        896 Areas not elsewhere specified
        898 Areas not specified
@@ -357,9 +350,9 @@ BT BTN 064 Bhutan
 BO BOL 068 Bolivia
 BA BIH 070 Bosnia and Herzegovina
 BW BWA 072 Botswana
-BV         Bouvet Island
+BV BVT 074 Bouvet Island
 BR BRA 076 Brazil
-IO         British Indian Ocean Territory
+IO IOT 086 British Indian Ocean Territory
 VG VGB 092 British Virgin Islands
 BN BRN 096 Brunei Darussalam
 BG BGR 100 Bulgaria
@@ -375,8 +368,9 @@ TD TCD 148 Chad
        830 Channel Islands
 CL CHL 152 Chile
 CN CHN 156 China
-CX         Christmas Island
-CC         Cocos (keeling) Islands
+CX CXR 162 Christmas Island
+AX ALA 248 Cland Islands
+CC CCK 166 Cocos (Keeling) Islands
 CO COL 170 Colombia
 KM COM 174 Comoros
 CG COG 178 Congo
@@ -393,7 +387,7 @@ DK DNK 208 Denmark
 DJ DJI 262 Djibouti
 DM DMA 212 Dominica
 DO DOM 214 Dominican Republic
-TP TMP 626 East Timor
+TL TLS 626 Timor-Leste
 EC ECU 218 Ecuador
 EG EGY 818 Egypt
 SV SLV 222 El Salvador
@@ -401,6 +395,7 @@ GQ GNQ 226 Equatorial Guinea
 ER ERI 232 Eritrea
 EE EST 233 Estonia
 ET ETH 231 Ethiopia
+EU         European Union
 FO FRO 234 Faeroe Islands
 FK FLK 238 Falkland Islands (Malvinas)
 FM FSM 583 Micronesia, Federated States of
@@ -410,7 +405,7 @@ MK MKD 807 The former Yugoslav Republic of Macedonia
 FR FRA 250 France
 GF GUF 254 French Guiana
 PF PYF 258 French Polynesia
-TF         French Southern Territories
+TF ATF 260 French Southern Territories
 GA GAB 266 Gabon
 GM GMB 270 Gambia
 GE GEO 268 Georgia
@@ -427,7 +422,7 @@ GN GIN 324 Guinea
 GW GNB 624 Guinea-Bissau
 GY GUY 328 Guyana
 HT HTI 332 Haiti
-HM         Heard Island And Mcdonald Islands
+HM HMD 334 Heard Island and McDonald Islands
 VA VAT 336 Holy See
 HN HND 340 Honduras
 HK HKG 344 Hong Kong Special Administrative Region of China
@@ -469,7 +464,7 @@ MH MHL 584 Marshall Islands
 MQ MTQ 474 Martinique
 MR MRT 478 Mauritania
 MU MUS 480 Mauritius
-YT         Mayotte
+YT MYT 175 Mayotte
 MX MEX 484 Mexico
 MC MCO 492 Monaco
 MN MNG 496 Mongolia
@@ -491,7 +486,7 @@ NU NIU 570 Niue
 NF NFK 574 Norfolk Island
 MP MNP 580 Northern Mariana Islands
 NO NOR 578 Norway
-   PSE 275 Occupied Palestinian Territory
+PS PSE 275 Occupied Palestinian Territory
 OM OMN 512 Oman
 PK PAK 586 Pakistan
 PW PLW 585 Palau
@@ -521,6 +516,7 @@ SM SMR 674 San Marino
 ST STP 678 Sao Tome and Principe
 SA SAU 682 Saudi Arabia
 SN SEN 686 Senegal
+CS SCG 891 Serbia and Montenegro
 SC SYC 690 Seychelles
 SL SLE 694 Sierra Leone
 SG SGP 702 Singapore
@@ -529,7 +525,7 @@ SI SVN 705 Slovenia
 SB SLB 090 Solomon Islands
 SO SOM 706 Somalia
 ZA ZAF 710 South Africa
-GS         South Georgia And The South Sandwich Islands
+GS SGS 239 South Georgia and the South Sandwich Islands
 ES ESP 724 Spain
 LK LKA 144 Sri Lanka
 SD SDN 736 Sudan
@@ -557,7 +553,7 @@ AE ARE 784 United Arab Emirates
 GB GBR 826 United Kingdom
 TZ TZA 834 United Republic of Tanzania
 US USA 840 United States
-UM         United States Minor Outlying Islands
+UM UMI 581 United States Minor Outlying Islands
 VI VIR 850 United States Virgin Islands
 UY URY 858 Uruguay
 UZ UZB 860 Uzbekistan

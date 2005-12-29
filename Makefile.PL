@@ -1,7 +1,14 @@
+use strict;
+use warnings;
 use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
+
 WriteMakefile(
-    'NAME'	=> 'Geography::Countries',
-    'VERSION_FROM' => 'Countries.pm', # finds $VERSION
+    NAME                => 'Geography::Countries',
+    AUTHOR              => 'Ashley <ashley@cpan.org>',
+    VERSION_FROM        => 'lib/Geography/Countries.pm',
+    PREREQ_PM => {
+        'Test::More' => 0,
+    },
+    dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
+    clean               => { FILES => 'Geography-Countries-*' },
 );

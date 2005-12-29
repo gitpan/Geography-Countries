@@ -1,4 +1,11 @@
-Countries.pm
-MANIFEST
+Changes
+lib/Geography/Countries.pm
 Makefile.PL
-test.pl
+MANIFEST			This list of files
+META.yml
+README
+t/00-load.t
+t/gc.t
+t/pod-coverage.t
+t/pod.t
+t/synopsis.t
