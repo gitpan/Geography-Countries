@@ -1,5 +1,9 @@
 Revision history for Geography::Countries
 
+1.41_02  20051228 2243
+         - README had copyright information incompatible to original
+           package.
+
 1.41_01  20051228 1906 ashley
          - Sent original author, Abigail, two emails and a CPAN ticket
            over the last 11 months without response so I'm submitting

@@ -9,13 +9,13 @@ Geography::Countries -- 2-letter, 3-letter, and numerical codes for countries.
 
 =head1 VERSION
 
-Version 1.41_01
+Version 1.41_02
 
 =cut
 
 use vars qw /@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION/;
 
-$VERSION     = '1.41_01';
+$VERSION     = '1.41_02';
 @ISA         = qw /Exporter/;
 @EXPORT      = qw /country/;
 @EXPORT_OK   = qw /code2         code3       numcode       countries
@@ -296,7 +296,7 @@ Updated by Ashley Pond V, C<< <ashley at cpan.org> >>
 
 =head1 COPYRIGHT AND LICENSE
 
-This package is copyright 1999-2003 by Abigail.
+This package is copyright 1999-2003 of Abigail.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
