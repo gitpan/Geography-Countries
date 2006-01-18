@@ -1,6 +1,11 @@
 Revision history for Geography::Countries
 
-1.41_02  20051228 2243
+1.41_03  20050117 2351 ashley
+         - Minor typos in POD fixed.
+         - Removed pod-coverage.t b/c it was causing failures on 3
+           OSes and it was just a boilerplate test from module-starter.
+
+1.41_02  20051228 2243 ashley
          - README had copyright information incompatible to original
            package.
 

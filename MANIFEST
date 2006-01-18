@@ -3,9 +3,9 @@ lib/Geography/Countries.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
+NOTES
 README
 t/00-load.t
 t/gc.t
-t/pod-coverage.t
 t/pod.t
 t/synopsis.t

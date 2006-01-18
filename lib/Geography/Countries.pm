@@ -9,13 +9,13 @@ Geography::Countries -- 2-letter, 3-letter, and numerical codes for countries.
 
 =head1 VERSION
 
-Version 1.41_02
+1.41_03
 
 =cut
 
 use vars qw /@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION/;
 
-$VERSION     = '1.41_02';
+$VERSION     = '1.41_03'; # last was 1.41_02
 @ISA         = qw /Exporter/;
 @EXPORT      = qw /country/;
 @EXPORT_OK   = qw /code2         code3       numcode       countries
@@ -153,18 +153,19 @@ only returns countries from the first set, but this can be changed
 by giving C<country> an optional second argument.
 
 The module optionally exports the constants C<CNT_F_REGULAR>,
-C<CNT_F_OLD>, C<CNT_F_REGION> and C<CNT_F_ANY>. These constants can also
-be important all at once by using the tag C<:FLAGS>. C<CNT_F_ANY> is just
-the binary or of the three other flags. The second argument of C<country>
-should be the binary or of a subset of the flags C<CNT_F_REGULAR>,
-C<CNT_F_OLD>, and C<CNT_F_REGION> - if no, or a false, second argument is
-given, C<CNT_F_REGULAR> is assumed. If C<CNT_F_REGULAR> is set, regular
-(current) countries will be returned; if C<CNT_F_OLD> is set, old,
-no longer existing, countries will be returned, while C<CNT_F_REGION>
-is used in case a region (not necessarely) a country might be returned.
-If C<country> is used in list context, the fifth returned element is
-one of C<CNT_F_REGULAR>, C<CNT_F_OLD> and C<CNT_F_REGION>, indicating
-whether the result is a regular country, an old country, or a region.
+C<CNT_F_OLD>, C<CNT_F_REGION> and C<CNT_F_ANY>. These constants can
+also be imported all at once by using the tag C<:FLAGS>. C<CNT_F_ANY>
+is just the binary or of the three other flags. The second argument of
+C<country> should be the binary or of a subset of the flags
+C<CNT_F_REGULAR>, C<CNT_F_OLD>, and C<CNT_F_REGION> - if no, or a
+false, second argument is given, C<CNT_F_REGULAR> is assumed. If
+C<CNT_F_REGULAR> is set, regular (current) countries will be returned;
+if C<CNT_F_OLD> is set, old, no longer existing, countries will be
+returned, while C<CNT_F_REGION> is used in case a region (not
+necessarely) a country might be returned. If C<country> is used in
+list context, the fifth returned element is one of C<CNT_F_REGULAR>,
+C<CNT_F_OLD> and C<CNT_F_REGION>, indicating whether the result is a
+regular country, an old country, or a region.
 
 In list context, C<country> returns a 5 element list. To avoid having
 to remember which element is in which index, the constants C<CNT_I_CODE2>,
