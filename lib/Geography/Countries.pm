@@ -9,13 +9,13 @@ Geography::Countries -- 2-letter, 3-letter, and numerical codes for countries.
 
 =head1 VERSION
 
-1.41_03
+1.41_04
 
 =cut
 
 use vars qw /@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION/;
 
-$VERSION     = '1.41_03'; # last was 1.41_02
+$VERSION     = '1.41_04';
 @ISA         = qw /Exporter/;
 @EXPORT      = qw /country/;
 @EXPORT_OK   = qw /code2         code3       numcode       countries
@@ -162,7 +162,7 @@ false, second argument is given, C<CNT_F_REGULAR> is assumed. If
 C<CNT_F_REGULAR> is set, regular (current) countries will be returned;
 if C<CNT_F_OLD> is set, old, no longer existing, countries will be
 returned, while C<CNT_F_REGION> is used in case a region (not
-necessarely) a country might be returned. If C<country> is used in
+necessarily) a country might be returned. If C<country> is used in
 list context, the fifth returned element is one of C<CNT_F_REGULAR>,
 C<CNT_F_OLD> and C<CNT_F_REGION>, indicating whether the result is a
 regular country, an old country, or a region.
@@ -195,9 +195,9 @@ comes from the United Nations.
 In a few cases, there was a conflict between the way how the United 
 Nations spelled a name, and how ISO 3166 spells it. In most cases,
 is was word order (for instance whether I<The republic of> should
-preceed the name, or come after the name. A few cases had minor
+precede the name, or come after the name. A few cases had minor
 spelling variations. In all such cases, the method in which the UN
-spelled the name was choosen; ISO 3166 claims to take the names from
+spelled the name was chosen; ISO 3166 claims to take the names from
 the UN, so we consider the UN authoritative.
 
 =over 4
@@ -293,7 +293,8 @@ See the file named "Changes" with this distribution.
 =head1 AUTHOR
 
 This package was written by Abigail, I<geometry-countries@abigail.nl>.
-Updated by Ashley Pond V, C<< <ashley at cpan.org> >>
+Updated by Ashley Pond V, C<< <ashley at cpan.org> >>, from sources
+including http://en.wikipedia.org/wiki/ISO_3166-1
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -311,7 +312,7 @@ in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
 THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -469,6 +470,7 @@ YT MYT 175 Mayotte
 MX MEX 484 Mexico
 MC MCO 492 Monaco
 MN MNG 496 Mongolia
+ME MNE 499 Montenegro
 MS MSR 500 Montserrat
 MA MAR 504 Morocco
 MZ MOZ 508 Mozambique
@@ -517,7 +519,7 @@ SM SMR 674 San Marino
 ST STP 678 Sao Tome and Principe
 SA SAU 682 Saudi Arabia
 SN SEN 686 Senegal
-CS SCG 891 Serbia and Montenegro
+RS SRB 688 Serbia
 SC SYC 690 Seychelles
 SL SLE 694 Sierra Leone
 SG SGP 702 Singapore
@@ -583,6 +585,7 @@ ZW ZWE 716 Zimbabwe
        180 Zaire
        384 Ivory Coast
        854 Upper Volta
+       891 Serbia and Montenegro
 %% Region %%
        002 Africa
        014 Eastern Africa

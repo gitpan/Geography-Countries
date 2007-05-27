@@ -1,4 +1,7 @@
 Revision history for Geography::Countries
+1.41_04  20070527 1611 ashley
+         - Broke out "Serbia and Montenegro" into their new
+           assignments as listed: http://en.wikipedia.org/wiki/ISO_3166-1
 
 1.41_03  20050117 2351 ashley
          - Minor typos in POD fixed.

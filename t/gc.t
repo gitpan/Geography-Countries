@@ -41,17 +41,17 @@ cmp_ok($list[CNT_I_COUNTRY], "eq", "United Kingdom",
       "(country('United Kingdom'))[" . CNT_I_COUNTRY
        . "] is United Kingdom");
 
-cmp_ok( scalar code2(), '==', 242,
-        "There are 242 codes in code2()");
+cmp_ok( scalar code2(), '==', 243,
+        "There are 243 codes in code2()");
 
-cmp_ok( scalar code3(), '==', 242,
-        "There are 242 codes in code3()");
+cmp_ok( scalar code3(), '==', 243,
+        "There are 243 codes in code3()");
 
-cmp_ok( scalar numcode(), '==', 288,
-        "There are 288 codes in numcode()");
+cmp_ok( scalar numcode(), '==', 290,
+        "There are 290 codes in numcode()");
 
-cmp_ok( scalar countries(), '==', 289,
-        "There are 289 codes in countries()");
+cmp_ok( scalar countries(), '==', 291,
+        "There are 291 codes in countries()");
 
 
 
