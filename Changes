@@ -1,44 +1,10 @@
-Revision history for Geography::Countries
-1.41_04  20070527 1611 ashley
-         - Broke out "Serbia and Montenegro" into their new
-           assignments as listed: http://en.wikipedia.org/wiki/ISO_3166-1
-
-1.41_03  20050117 2351 ashley
-         - Minor typos in POD fixed.
-         - Removed pod-coverage.t b/c it was causing failures on 3
-           OSes and it was just a boilerplate test from module-starter.
-
-1.41_02  20051228 2243 ashley
-         - README had copyright information incompatible to original
-           package.
-
-1.41_01  20051228 1906 ashley
-         - Sent original author, Abigail, two emails and a CPAN ticket
-           over the last 11 months without response so I'm submitting
-           this update which I put together in 02/2005; this is itself
-           probably already a bit out of date.
-         - Tagged as dev release in case of transition problems.
-         - Updated with codes added since last release.
-         - http://en.wikipedia.org/wiki/Country_code
-         - Most of the changes are countries that formerly didn't have
-           3-letter codes; 12 new ones.
-         - Updated dist with module-builder. Kept all original
-           material but reorganized POD a bit and added information.
-         - Modernized test script with Test::More; it's testing the
-           same things as 1.4 was plus a couple new adjuncts.
-         - Added synopsis.t.
-
-1.4    2003/01/26 18:19:07 abigail
-       - Changed license, email address. Added installation section.
-
-1.3    2003/01/26 18:12:10 abigail
-       - Removed INIT{} from initializing code, as the INIT{} isn't
-         run when doing 'require'.
-
-1.2    2000/09/05 18:22:01 abigail
-       - Changed typo in "Federal Republic of Germany" (Dan Allen)
-       - Changed layout of test.pl
-
-1.1    1999/09/15 07:27:22 abigail
-       - Initial revision
-
+Version 2009040801
+- Moved to git and github.
+- Modernized distro.
+----
+Revision 1.2  2000/09/05 18:22:01  abigail
+Changed typo in "Federal Republic of Germany" (Dan Allen)
+Changed layout of test.pl
+----
+Revision 1.1  1999/09/15 07:27:22  abigail
+Initial revision

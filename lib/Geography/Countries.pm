@@ -1,32 +1,27 @@
 package Geography::Countries;
 
+use 5.006;
+
 use strict;
-use Exporter;
+use warnings;
+no  warnings 'syntax';
 
-=head1 NAME
+use Exporter ();
 
-Geography::Countries -- 2-letter, 3-letter, and numerical codes for countries.
+our @ISA         = qw /Exporter/;
+our @EXPORT      = qw /country/;
+our @EXPORT_OK   = qw /code2         code3       numcode       countries
+                       CNT_I_CODE2   CNT_I_CODE3 CNT_I_NUMCODE CNT_I_COUNTRY
+                       CNT_I_FLAG
+                       CNT_F_REGULAR CNT_F_OLD   CNT_F_REGION  CNT_F_ANY/;
+our %EXPORT_TAGS = (LISTS   => [qw /code2 code3   numcode     countries/],
+                    INDICES => [qw /CNT_I_CODE2   CNT_I_CODE3 CNT_I_NUMCODE
+                                    CNT_I_COUNTRY CNT_I_FLAG/],
+                    FLAGS   => [qw /CNT_F_REGULAR CNT_F_OLD
+                                    CNT_F_REGION  CNT_F_ANY/],);
 
-=head1 VERSION
+our $VERSION     = '2009040801';
 
-1.41_04
-
-=cut
-
-use vars qw /@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION/;
-
-$VERSION     = '1.41_04';
-@ISA         = qw /Exporter/;
-@EXPORT      = qw /country/;
-@EXPORT_OK   = qw /code2         code3       numcode       countries
-                   CNT_I_CODE2   CNT_I_CODE3 CNT_I_NUMCODE CNT_I_COUNTRY
-                   CNT_I_FLAG
-                   CNT_F_REGULAR CNT_F_OLD   CNT_F_REGION  CNT_F_ANY/;
-%EXPORT_TAGS = (LISTS   => [qw /code2 code3   numcode     countries/],
-                INDICES => [qw /CNT_I_CODE2   CNT_I_CODE3 CNT_I_NUMCODE
-                                CNT_I_COUNTRY CNT_I_FLAG/],
-                FLAGS   => [qw /CNT_F_REGULAR CNT_F_OLD
-                                CNT_F_REGION  CNT_F_ANY/],);
 
 use constant CNT_I_CODE2   =>    0;
 use constant CNT_I_CODE3   =>    1;
@@ -51,45 +46,47 @@ sub norm ($) {
     $query;
 }
 
-my $flag;
-my %flags   = (
-    Regular => CNT_F_REGULAR,
-    Old     => CNT_F_OLD,
-    Region  => CNT_F_REGION,
-);
-while (<DATA>) {
-    chomp;
-    last if $_ eq '__END__';
-    s/#.*//;
-    next unless /\S/;
-    if (/^%%\s*(\S.*\S)\s*%%$/) {
-        $flag = $flags {$1} or
-                 die "Found illegal flag ``$1'' while parsing __DATA__\n";
-        next;
+INIT {
+    my $flag;
+    my %flags   = (
+        Regular => CNT_F_REGULAR,
+        Old     => CNT_F_OLD,
+        Region  => CNT_F_REGION,
+    );
+    while (<DATA>) {
+        chomp;
+        last if $_ eq '__END__';
+        s/#.*//;
+        next unless /\S/;
+        if (/^%%\s*(\S.*\S)\s*%%$/) {
+            $flag = $flags {$1} or
+                     die "Found illegal flag ``$1'' while parsing __DATA__\n";
+            next;
+        }
+        my $code2   = substr $_,  0, 2;  $code2   = undef if $code2   =~ /\s/;
+        my $code3   = substr $_,  3, 3;  $code3   = undef if $code3   =~ /\s/;
+        my $numcode = substr $_,  7, 3;  $numcode = undef if $numcode =~ /\s/;
+        my $country = substr $_, 11;
+
+        push @code2     =>  $code2   if defined $code2;
+        push @code3     =>  $code3   if defined $code3;
+        push @numcode   =>  $numcode if defined $numcode;
+        push @countries =>  $country;
+
+        my $info    = [$code2, $code3, $numcode, $country, $flag];
+
+        $info {norm $code2}   =  $info if defined $code2  ;
+        $info {norm $code3}   =  $info if defined $code3  ;
+        $info {$numcode}      =  $info if defined $numcode;
+
+        $info {norm $country} =  $info;
     }
-    my $code2   = substr $_,  0, 2;  $code2   = undef if $code2   =~ /\s/;
-    my $code3   = substr $_,  3, 3;  $code3   = undef if $code3   =~ /\s/;
-    my $numcode = substr $_,  7, 3;  $numcode = undef if $numcode =~ /\s/;
-    my $country = substr $_, 11;
 
-    push @code2     =>  $code2   if defined $code2;
-    push @code3     =>  $code3   if defined $code3;
-    push @numcode   =>  $numcode if defined $numcode;
-    push @countries =>  $country;
-
-    my $info    = [$code2, $code3, $numcode, $country, $flag];
-
-    $info {norm $code2}   =  $info if defined $code2  ;
-    $info {norm $code3}   =  $info if defined $code3  ;
-    $info {$numcode}      =  $info if defined $numcode;
-
-    $info {norm $country} =  $info;
+    @code2     = sort @code2;
+    @code3     = sort @code3;
+    @numcode   = sort @numcode;
+    @countries = sort @countries;
 }
-
-@code2     = sort @code2;
-@code3     = sort @code3;
-@numcode   = sort @numcode;
-@countries = sort @countries;
 
 sub code2     {@code2}
 sub code3     {@code3}
@@ -107,7 +104,7 @@ sub country ($;$) {
 
     die "Undefined argument for $sub.\n"     unless defined $query;
 
-    $flags ||= CNT_F_REGULAR;
+    $flags ||=  CNT_F_REGULAR;
 
     die "Illegal second argument to $sub.\n" if $flags =~ /\D/;
 
@@ -116,15 +113,23 @@ sub country ($;$) {
     return unless $info -> [CNT_I_FLAG] & $flags;
 
     wantarray ? @$info : $info -> [CNT_I_COUNTRY];
+
 }
+
+1;
+
+=pod
+
+=head1 NAME
+
+Geography::Countries - 2-letter, 3-letter, and numerical codes for countries.
 
 =head1 SYNOPSIS
 
- use strict;
- use Geography::Countries;
+    use Geography::Countries;
 
- my $country = country 'DE';  # 'Germany'
- my @list    = country  666;  # ('PM', 'SPM', 666,
+    $country = country 'DE';  # 'Germany'
+    @list    = country  666;  # ('PM', 'SPM', 666,
                               #  'Saint Pierre and Miquelon', 1)
 
 =head1 DESCRIPTION
@@ -133,7 +138,7 @@ This module maps country names, and their 2-letter, 3-letter and
 numerical codes, as defined by the ISO-3166 maintenance agency [1],
 and defined by the UNSD.
 
-=head2 The C<country> subroutine
+=head2 The C<country> subroutine.
 
 This subroutine is exported by default. It takes a 2-letter, 3-letter or
 numerical code, or a country name as argument. In scalar context, it will
@@ -153,19 +158,18 @@ only returns countries from the first set, but this can be changed
 by giving C<country> an optional second argument.
 
 The module optionally exports the constants C<CNT_F_REGULAR>,
-C<CNT_F_OLD>, C<CNT_F_REGION> and C<CNT_F_ANY>. These constants can
-also be imported all at once by using the tag C<:FLAGS>. C<CNT_F_ANY>
-is just the binary or of the three other flags. The second argument of
-C<country> should be the binary or of a subset of the flags
-C<CNT_F_REGULAR>, C<CNT_F_OLD>, and C<CNT_F_REGION> - if no, or a
-false, second argument is given, C<CNT_F_REGULAR> is assumed. If
-C<CNT_F_REGULAR> is set, regular (current) countries will be returned;
-if C<CNT_F_OLD> is set, old, no longer existing, countries will be
-returned, while C<CNT_F_REGION> is used in case a region (not
-necessarily) a country might be returned. If C<country> is used in
-list context, the fifth returned element is one of C<CNT_F_REGULAR>,
-C<CNT_F_OLD> and C<CNT_F_REGION>, indicating whether the result is a
-regular country, an old country, or a region.
+C<CNT_F_OLD>, C<CNT_F_REGION> and C<CNT_F_ANY>. These constants can also
+be important all at once by using the tag C<:FLAGS>. C<CNT_F_ANY> is just
+the binary or of the three other flags. The second argument of C<country>
+should be the binary or of a subset of the flags C<CNT_F_REGULAR>,
+C<CNT_F_OLD>, and C<CNT_F_REGION> - if no, or a false, second argument is
+given, C<CNT_F_REGULAR> is assumed. If C<CNT_F_REGULAR> is set, regular
+(current) countries will be returned; if C<CNT_F_OLD> is set, old,
+no longer existing, countries will be returned, while C<CNT_F_REGION>
+is used in case a region (not necessarely) a country might be returned.
+If C<country> is used in list context, the fifth returned element is
+one of C<CNT_F_REGULAR>, C<CNT_F_OLD> and C<CNT_F_REGION>, indicating
+whether the result is a regular country, an old country, or a region.
 
 In list context, C<country> returns a 5 element list. To avoid having
 to remember which element is in which index, the constants C<CNT_I_CODE2>,
@@ -175,7 +179,7 @@ the 3-letter code, the numerical code, the country, and the flag explained
 above, respectively. All index constants can be imported by using the
 C<:INDICES> tag.
 
-=head2 The C<code2>, C<code3>, C<numcode> and C<countries> routines
+=head2 The C<code2>, C<code3>, C<numcode> and C<countries> routines.
 
 All known 2-letter codes, 3-letter codes, numerical codes and country
 names can be returned by the routines C<code2>, C<code3>, C<numcode> and
@@ -195,9 +199,9 @@ comes from the United Nations.
 In a few cases, there was a conflict between the way how the United 
 Nations spelled a name, and how ISO 3166 spells it. In most cases,
 is was word order (for instance whether I<The republic of> should
-precede the name, or come after the name. A few cases had minor
+preceed the name, or come after the name. A few cases had minor
 spelling variations. In all such cases, the method in which the UN
-spelled the name was chosen; ISO 3166 claims to take the names from
+spelled the name was choosen; ISO 3166 claims to take the names from
 the UN, so we consider the UN authoritative.
 
 =over 4
@@ -241,10 +245,6 @@ I<Geographical regions>.
 I<http://www.un.org/Depts/unsd/methods/m49regin.htm>,
 26 August 1999.
 
-=item [8]
-
-I<http://en.wikipedia.org/wiki/Country_code>, 10 February 2005.
-
 =back
 
 =head1 BUGS
@@ -254,52 +254,19 @@ Except for case and the amount of white space, the exact name as it
 appears on the list has to be given. I<USA> will not return anything,
 but I<United States> will.
 
-Please report bugs to C<bug-geography-countries at rt.cpan.org>, or
-through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Geography-Countries>.
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Geography::Countries
-
-You can also look for information at:
-
-=over 4
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Geography-Countries>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Geography-Countries>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Geography-Countries>
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Geography-Countries>
-
-=back
-
-=head1 HISTORY
-
-See the file named "Changes" with this distribution.
-
+=head1 DEVELOPMENT
+    
+The current sources of this module are found on github,
+L<< git://github.com/Abigail/geography--countries.git >>.
+    
 =head1 AUTHOR
-
-This package was written by Abigail, I<geometry-countries@abigail.nl>.
-Updated by Ashley Pond V, C<< <ashley at cpan.org> >>, from sources
-including http://en.wikipedia.org/wiki/ISO_3166-1
-
-=head1 COPYRIGHT AND LICENSE
-
-This package is copyright 1999-2003 of Abigail.
-
+    
+Abigail L<< mailto:geography-countries@abigail.be >>.
+    
+=head1 COPYRIGHT and LICENSE
+       
+Copyright (C) 1999, 2009 by Abigail
+    
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation
@@ -312,7 +279,7 @@ in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -329,7 +296,7 @@ AS ASM 016 American Samoa
 AD AND 020 Andorra
 AO AGO 024 Angola
 AI AIA 660 Anguilla
-AQ ATA 010 Antarctica
+AQ         Antarctica
 AG ATG 028 Antigua and Barbuda
        896 Areas not elsewhere specified
        898 Areas not specified
@@ -352,9 +319,9 @@ BT BTN 064 Bhutan
 BO BOL 068 Bolivia
 BA BIH 070 Bosnia and Herzegovina
 BW BWA 072 Botswana
-BV BVT 074 Bouvet Island
+BV         Bouvet Island
 BR BRA 076 Brazil
-IO IOT 086 British Indian Ocean Territory
+IO         British Indian Ocean Territory
 VG VGB 092 British Virgin Islands
 BN BRN 096 Brunei Darussalam
 BG BGR 100 Bulgaria
@@ -370,9 +337,8 @@ TD TCD 148 Chad
        830 Channel Islands
 CL CHL 152 Chile
 CN CHN 156 China
-CX CXR 162 Christmas Island
-AX ALA 248 Cland Islands
-CC CCK 166 Cocos (Keeling) Islands
+CX         Christmas Island
+CC         Cocos (keeling) Islands
 CO COL 170 Colombia
 KM COM 174 Comoros
 CG COG 178 Congo
@@ -389,7 +355,7 @@ DK DNK 208 Denmark
 DJ DJI 262 Djibouti
 DM DMA 212 Dominica
 DO DOM 214 Dominican Republic
-TL TLS 626 Timor-Leste
+TP TMP 626 East Timor
 EC ECU 218 Ecuador
 EG EGY 818 Egypt
 SV SLV 222 El Salvador
@@ -397,7 +363,6 @@ GQ GNQ 226 Equatorial Guinea
 ER ERI 232 Eritrea
 EE EST 233 Estonia
 ET ETH 231 Ethiopia
-EU         European Union
 FO FRO 234 Faeroe Islands
 FK FLK 238 Falkland Islands (Malvinas)
 FM FSM 583 Micronesia, Federated States of
@@ -407,7 +372,7 @@ MK MKD 807 The former Yugoslav Republic of Macedonia
 FR FRA 250 France
 GF GUF 254 French Guiana
 PF PYF 258 French Polynesia
-TF ATF 260 French Southern Territories
+TF         French Southern Territories
 GA GAB 266 Gabon
 GM GMB 270 Gambia
 GE GEO 268 Georgia
@@ -424,7 +389,7 @@ GN GIN 324 Guinea
 GW GNB 624 Guinea-Bissau
 GY GUY 328 Guyana
 HT HTI 332 Haiti
-HM HMD 334 Heard Island and McDonald Islands
+HM         Heard Island And Mcdonald Islands
 VA VAT 336 Holy See
 HN HND 340 Honduras
 HK HKG 344 Hong Kong Special Administrative Region of China
@@ -466,11 +431,10 @@ MH MHL 584 Marshall Islands
 MQ MTQ 474 Martinique
 MR MRT 478 Mauritania
 MU MUS 480 Mauritius
-YT MYT 175 Mayotte
+YT         Mayotte
 MX MEX 484 Mexico
 MC MCO 492 Monaco
 MN MNG 496 Mongolia
-ME MNE 499 Montenegro
 MS MSR 500 Montserrat
 MA MAR 504 Morocco
 MZ MOZ 508 Mozambique
@@ -489,7 +453,7 @@ NU NIU 570 Niue
 NF NFK 574 Norfolk Island
 MP MNP 580 Northern Mariana Islands
 NO NOR 578 Norway
-PS PSE 275 Occupied Palestinian Territory
+   PSE 275 Occupied Palestinian Territory
 OM OMN 512 Oman
 PK PAK 586 Pakistan
 PW PLW 585 Palau
@@ -519,7 +483,6 @@ SM SMR 674 San Marino
 ST STP 678 Sao Tome and Principe
 SA SAU 682 Saudi Arabia
 SN SEN 686 Senegal
-RS SRB 688 Serbia
 SC SYC 690 Seychelles
 SL SLE 694 Sierra Leone
 SG SGP 702 Singapore
@@ -528,7 +491,7 @@ SI SVN 705 Slovenia
 SB SLB 090 Solomon Islands
 SO SOM 706 Somalia
 ZA ZAF 710 South Africa
-GS SGS 239 South Georgia and the South Sandwich Islands
+GS         South Georgia And The South Sandwich Islands
 ES ESP 724 Spain
 LK LKA 144 Sri Lanka
 SD SDN 736 Sudan
@@ -556,7 +519,7 @@ AE ARE 784 United Arab Emirates
 GB GBR 826 United Kingdom
 TZ TZA 834 United Republic of Tanzania
 US USA 840 United States
-UM UMI 581 United States Minor Outlying Islands
+UM         United States Minor Outlying Islands
 VI VIR 850 United States Virgin Islands
 UY URY 858 Uruguay
 UZ UZB 860 Uzbekistan
@@ -585,7 +548,6 @@ ZW ZWE 716 Zimbabwe
        180 Zaire
        384 Ivory Coast
        854 Upper Volta
-       891 Serbia and Montenegro
 %% Region %%
        002 Africa
        014 Eastern Africa
